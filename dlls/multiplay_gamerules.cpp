@@ -33,6 +33,9 @@
 #define WEAPON_RESPAWN_TIME 20
 #define AMMO_RESPAWN_TIME 20
 
+// longest the intermission can last, in seconds
+#define MAX_INTERMISSION_TIME 120
+
 CVoiceGameMgr g_VoiceGameMgr;
 
 class CMultiplayGameMgrHelper : public IVoiceGameMgrHelper
@@ -157,9 +160,6 @@ void CHalfLifeMultiplay::RefreshSkillData()
 	// hornet
 	gSkillData.plrDmgHornet = 10;
 }
-
-// longest the intermission can last, in seconds
-#define MAX_INTERMISSION_TIME 120
 
 //=========================================================
 //=========================================================
@@ -1263,7 +1263,8 @@ bool ReloadMapCycleFile(char* filename, mapcycle_t* cycle)
 			if (strlen(com_token) <= 0)
 				break;
 
-			strcpy(szMap, com_token);
+			strncpy(szMap, com_token, sizeof(szMap));
+			szMap[sizeof(szMap) - 1] = '\0';
 
 			// Any more tokens on this line?
 			if (COM_TokenWaiting(pFileList))
@@ -1272,7 +1273,8 @@ bool ReloadMapCycleFile(char* filename, mapcycle_t* cycle)
 				if (strlen(com_token) > 0)
 				{
 					hasbuffer = true;
-					strcpy(szBuffer, com_token);
+					strncpy(szBuffer, com_token, sizeof(szBuffer));
+					szBuffer[sizeof(szBuffer) - 1] = '\0';
 				}
 			}
 

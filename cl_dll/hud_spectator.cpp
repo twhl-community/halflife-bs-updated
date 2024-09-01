@@ -209,7 +209,8 @@ void UTIL_StringToVector(float* pVector, const char* pString)
 	char *pstr, *pfront, tempString[128];
 	int j;
 
-	strcpy(tempString, pString);
+	strncpy(tempString, pString, sizeof(tempString));
+	tempString[sizeof(tempString) - 1] = '\0';
 	pstr = pfront = tempString;
 
 	for (j = 0; j < 3; j++)
@@ -806,7 +807,7 @@ void CHudSpectator::DirectorMessage(int iSize, void* pbuf)
 		break;
 
 	case DRC_CMD_STUFFTEXT:
-		gEngfuncs.pfnFilteredClientCmd(READ_STRING());
+		EngineFilteredClientCmd(READ_STRING());
 		break;
 
 	case DRC_CMD_CAMPATH:
